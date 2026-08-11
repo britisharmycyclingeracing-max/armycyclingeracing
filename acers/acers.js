@@ -106,7 +106,7 @@ function corpsJerseyFile(corps) {
 }
 function corpsJerseyPath(corps) {
   const file = corpsJerseyFile(corps);
-  return file ? `../jersey/${encodeURIComponent(file)}` : '';
+  return file ? `../assets/jersey/${encodeURIComponent(file)}` : '';
 }
 function jerseyImg(corps, className='jersey-thumb') {
   const src = corpsJerseyPath(corps);
