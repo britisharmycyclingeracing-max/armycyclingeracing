@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ACeRS registered riders and verification status for the 2025/26 season.">
+  <title>Riders | ACeRS</title>
+  <link rel="stylesheet" href="../css/site.css?v=20260811">
+</head>
+<body>
+  <nav class="top-nav">
+    <div class="top-nav-inner">
+      <a href="../index.html" class="nav-logo"><div class="nav-title"><div class="nav-main">Army Cycling eRacing</div><div class="nav-sub">Army Cycling eRace Series</div></div></a>
+      <div class="nav-links">
+        <a href="./index.html">ACeRS Home</a>
+        <a href="./riders.html" class="active">Riders</a>
+        <a href="./standings.html">2025/26 Standings</a>
+        <a href="../mmm.html">MMM</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="section-shell acers-data-page">
+    <section class="data-page-hero">
+      <div class="eyebrow">2025/26 ARCHIVE</div>
+      <h1>ACeRS <span>Riders</span></h1>
+      <p>Search registered riders and check their Army Cycling membership verification status. Select a rider to view their ACeRS profile and Autumn 2025 championship record.</p>
+    </section>
+
+    <section class="status-explainer">
+      <div class="status-icon">✓</div>
+      <div><strong>Why verification is shown</strong><p>Verified riders are eligible to count in the official ACeRS championship results. If a rider is not verified, their profile explains why their results may not appear in the standings.</p></div>
+    </section>
+
+    <section class="data-toolbar">
+      <input id="riderSearch" type="search" placeholder="Search name, Corps or Zwift ID…" aria-label="Search riders">
+      <select id="competitionFilter"><option value="">All competitions</option><option value="Open">Open</option><option value="Female">Female</option></select>
+      <select id="catFilter"><option value="">All categories</option><option>A</option><option>B</option><option>C</option><option>D</option></select>
+      <select id="verificationFilter"><option value="">All verification</option><option value="verified">Verified</option><option value="unverified">Not verified</option></select>
+    </section>
+
+    <div class="rider-summary" id="riderSummary">Loading riders…</div>
+    <section class="acers-table-wrap">
+      <table class="acers-table">
+        <thead><tr><th>Rider</th><th>Corps</th><th>Competition</th><th>Cat</th><th>Verification</th><th></th></tr></thead>
+        <tbody id="riderRows"><tr><td colspan="6" class="loading-cell">Loading…</td></tr></tbody>
+      </table>
+    </section>
+    <a class="back-link" href="./index.html">← Back to ACeRS</a>
+  </main>
+
+  <script src="./acers.js"></script>
+  <script>
+    let data;
+    const search = document.getElementById('riderSearch');
+    const comp = document.getElementById('competitionFilter');
+    const cat = document.getElementById('catFilter');
+    const verify = document.getElementById('verificationFilter');
+
+    function render() {
+      const q = search.value.trim().toLowerCase();
+      let riders = data.riders.filter(r => {
+        const haystack = `${r.name} ${r.corps} ${r.zwiftId}`.toLowerCase();
+        return (!q || haystack.includes(q)) &&
+          (!comp.value || r.competition === comp.value) &&
+          (!cat.value || r.cat === cat.value) &&
+          (!verify.value || (verify.value === 'verified' ? r.verified : !r.verified));
+      }).sort((a,b) => a.name.localeCompare(b.name));
+
+      const totalVerified = riders.filter(r => r.verified).length;
+      document.getElementById('riderSummary').innerHTML = `<strong>${riders.length}</strong> riders shown <span>•</span> <strong>${totalVerified}</strong> verified`;
+      document.getElementById('riderRows').innerHTML = riders.length ? riders.map(r => `
+        <tr>
+          <td><a class="rider-name-link" href="./profile.html?id=${encodeURIComponent(r.zwiftId)}">${esc(r.name)}</a><div class="table-sub">Zwift ID ${esc(r.zwiftId)}</div></td>
+          <td>${esc(r.corps)}</td><td>${esc(r.competition)}</td><td><span class="cat-box cat-${esc(r.cat)}">${esc(r.cat)}</span></td>
+          <td>${verifiedBadge(r.verified)}</td>
+          <td class="row-action"><a href="./profile.html?id=${encodeURIComponent(r.zwiftId)}">Profile →</a></td>
+        </tr>`).join('') : '<tr><td colspan="6" class="loading-cell">No riders match those filters.</td></tr>';
+    }
+
+    loadAcersData().then(d => { data = d; render(); [search,comp,cat,verify].forEach(el => el.addEventListener(el.tagName === 'INPUT' ? 'input' : 'change', render)); })
+      .catch(err => document.getElementById('riderRows').innerHTML = `<tr><td colspan="6" class="loading-cell">${esc(err.message)}</td></tr>`);
+  </script>
+</body>
+</html>

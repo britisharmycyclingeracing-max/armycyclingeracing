@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rider Profile | ACeRS</title>
+  <link rel="stylesheet" href="../css/site.css?v=20260811">
+</head>
+<body>
+  <nav class="top-nav">
+    <div class="top-nav-inner">
+      <a href="../index.html" class="nav-logo"><div class="nav-title"><div class="nav-main">Army Cycling eRacing</div><div class="nav-sub">Army Cycling eRace Series</div></div></a>
+      <div class="nav-links"><a href="./index.html">ACeRS Home</a><a href="./riders.html" class="active">Riders</a><a href="./standings.html">2025/26 Standings</a></div>
+    </div>
+  </nav>
+
+  <main class="section-shell acers-data-page" id="profileRoot"><div class="profile-loading">Loading rider profile…</div></main>
+  <script src="./acers.js"></script>
+  <script>
+    const id = new URLSearchParams(window.location.search).get('id');
+    const root = document.getElementById('profileRoot');
+
+    function metric(label, entry, type='points') {
+      if (!entry) return `<div class="profile-metric"><span>${label}</span><strong>—</strong><small>No championship entry</small></div>`;
+      const value = type === 'gc' ? formatExcelDuration(entry.time) : (entry.total ?? '—');
+      return `<div class="profile-metric"><span>${label}</span><strong>${esc(value)}</strong><small>${entry.position ? `Position ${esc(entry.position)}` : 'No position'}</small></div>`;
+    }
+
+    loadAcersData().then(data => {
+      const rider = findRider(data, id);
+      if (!rider) { root.innerHTML = `<section class="data-page-hero"><h1>Rider not found</h1><p>No registered rider matches that Zwift ID.</p></section><a class="back-link" href="./riders.html">← Back to Riders</a>`; return; }
+      const s = standingsForRider(data, id);
+      const racePoints = s.points?.races || [null,null,null,null,null,null];
+      document.title = `${rider.name} | ACeRS`;
+      root.innerHTML = `
+        <section class="profile-header">
+          <div><div class="eyebrow">ACeRS RIDER PROFILE • 2025/26</div><h1>${esc(rider.name)}</h1><div class="profile-meta"><span>${esc(rider.corps)}</span><span>${esc(rider.competition)} Competition</span><span>Category ${esc(rider.cat)}</span><span>Zwift ID ${esc(rider.zwiftId)}</span></div></div>
+          <div>${verifiedBadge(rider.verified)}</div>
+        </section>
+        ${rider.verified ? `<section class="verification-message ok"><strong>✓ Membership verified</strong><p>This rider is eligible to count in official ACeRS championship results.</p></section>` : `<section class="verification-message warning"><strong>Membership not verified</strong><p>This rider is registered, but their Army Cycling membership has not been verified. Their race participation may therefore not appear or count in the official ACeRS championship standings.</p></section>`}
+        <section class="profile-section"><div class="section-heading"><div><div class="eyebrow">AUTUMN 2025</div><h2>Championship record</h2></div><a href="./standings.html">View full standings →</a></div>
+          <div class="metric-grid">${metric('Championship points',s.points)}${metric('Sprint points',s.sprint)}${metric('KOM points',s.kom)}${metric('General classification',s.gc,'gc')}</div>
+        </section>
+        <section class="profile-section"><div class="section-heading"><div><div class="eyebrow">RACE HISTORY</div><h2>Race-by-race points</h2></div></div>
+          <div class="race-history">${racePoints.map((p,i)=>`<div class="race-tile"><span>Race ${i+1}</span><strong>${p ?? '—'}</strong><small>${p === null || p === undefined ? 'No score' : 'points'}</small></div>`).join('')}</div>
+        </section>
+        <div class="profile-actions"><a class="back-link" href="./riders.html">← Back to Riders</a><a class="btn secondary" href="https://zwiftpower.com/profile.php?z=${encodeURIComponent(rider.zwiftId)}" target="_blank" rel="noopener">ZwiftPower profile ↗</a></div>`;
+    }).catch(err => root.innerHTML = `<div class="profile-loading">${esc(err.message)}</div>`);
+  </script>
+</body>
+</html>
