@@ -1,9 +1,32 @@
-const ACERS_DATA_URL = './data/autumn-2025.json';
+async function fetchJson(url) {
+  const response = await fetch(url, { cache: 'no-store' });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const data = await response.json();
+  if (data && data.ok === false) throw new Error(data.error || 'ACeRS API returned an error');
+  return data;
+}
 
 async function loadAcersData() {
-  const response = await fetch(ACERS_DATA_URL, { cache: 'no-store' });
-  if (!response.ok) throw new Error(`Unable to load ACeRS data (${response.status})`);
-  return response.json();
+  // Prefer the live ACeRS Apps Script API when configured.
+  if (typeof ACERS_API_BASE !== 'undefined' && ACERS_API_BASE) {
+    try {
+      const url = new URL(ACERS_API_BASE);
+      url.searchParams.set('api', 'archive');
+      url.searchParams.set('series', 'autumn-2025');
+      const live = await fetchJson(url.toString());
+      live._source = 'live';
+      return live;
+    } catch (error) {
+      console.warn('ACeRS live API unavailable; using static archive.', error);
+    }
+  }
+
+  const fallback = (typeof ACERS_STATIC_FALLBACK !== 'undefined' && ACERS_STATIC_FALLBACK)
+    ? ACERS_STATIC_FALLBACK
+    : './data/autumn-2025.json';
+  const data = await fetchJson(fallback);
+  data._source = 'static';
+  return data;
 }
 
 function esc(value) {
