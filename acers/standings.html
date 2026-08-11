@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="ACeRS Autumn 2025 championship standings archive."><title>2025/26 Standings | ACeRS</title>
-  <link rel="stylesheet" href="../css/site.css?v=20260811">
+  <meta name="description" content="ACeRS Autumn 2025 series standings archive."><title>Autumn 2025 Series Standings | ACeRS</title>
+  <link rel="stylesheet" href="../css/site.css?v=20260811-acers2">
 </head>
 <body>
-<nav class="top-nav"><div class="top-nav-inner"><a href="../index.html" class="nav-logo"><div class="nav-title"><div class="nav-main">Army Cycling eRacing</div><div class="nav-sub">Army Cycling eRace Series</div></div></a><div class="nav-links"><a href="./index.html">ACeRS Home</a><a href="./riders.html">Riders</a><a href="./results.html">Race Results</a><a class="active" href="./standings.html">2025/26 Standings</a><a href="../mmm.html">MMM</a></div></div></nav>
+<nav class="top-nav"><div class="top-nav-inner"><a href="../index.html" class="nav-logo"><div class="nav-title"><div class="nav-main">Army Cycling eRacing</div><div class="nav-sub">Army Cycling eRace Series</div></div></a><div class="nav-links"><a href="./index.html">ACeRS Home</a><a href="./riders.html">Riders</a><a href="./results.html">Race Results</a><a class="active" href="./standings.html">Series Standings</a><a href="./schedule.html">Schedule</a><a href="./rules.html">Rules</a><a href="./archive.html">Archive</a><a href="../mmm.html">MMM</a></div></div></nav>
 <main class="section-shell acers-data-page">
-  <section class="data-page-hero"><div class="eyebrow">2025/26 ARCHIVE • COMPLETE</div><h1>Autumn 2025 <span>Standings</span></h1><p>Historical ACeRS championship data used to test the new Army Cycling eRacing site ahead of the 2026/27 season.</p></section>
-  <div class="standings-tabs" role="tablist"><button class="active" data-view="points">Championship</button><button data-view="sprint">Sprint</button><button data-view="kom">KOM</button><button data-view="gc">GC</button><button data-view="corps">Corps</button></div>
+  <section class="data-page-hero"><div class="eyebrow">2025/26 ARCHIVE • COMPLETE</div><h1>Autumn 2025 <span>Series Standings</span></h1><p>Final standings from the Autumn 2025 ACeRS series: overall points, Sprint, KOM, GC and Corps competitions.</p></section>
+  <div class="standings-tabs" role="tablist"><button class="active" data-view="points">Overall</button><button data-view="sprint">Sprint</button><button data-view="kom">KOM</button><button data-view="gc">GC</button><button data-view="corps">Corps</button></div>
   <section class="data-toolbar standings-filter" id="riderFilters"><select id="standingCompetition"><option value="Open">Open Competition</option><option value="Female">Female Competition</option></select><select id="standingCat"><option value="">All categories</option><option>A</option><option>B</option><option>C</option><option>D</option></select></section>
   <div class="standing-description" id="standingDescription"></div>
   <section class="acers-table-wrap"><table class="acers-table standings-table"><thead id="standingHead"></thead><tbody id="standingRows"><tr><td class="loading-cell">Loading…</td></tr></tbody></table></section>
@@ -19,7 +19,7 @@
   <script src="./acers.js"></script>
 <script>
 let data, view='points';
-const descriptions={points:'Overall championship points from the Autumn 2025 six-race series.',sprint:'Season sprint-prime points.',kom:'Season King/Queen of the Mountains prime points.',gc:'Cumulative General Classification time across the series.',corps:'Corps competition totals across all six races.'};
+const descriptions={points:'Overall series points from the Autumn 2025 six-race series.',sprint:'Season sprint-prime points.',kom:'Season King/Queen of the Mountains prime points.',gc:'Cumulative General Classification time across the series.',corps:'Corps competition totals across all six races.'};
 function renderStanding(){
   const rowsEl=document.getElementById('standingRows'), head=document.getElementById('standingHead');
   document.getElementById('standingDescription').textContent=descriptions[view];

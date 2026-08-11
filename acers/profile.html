@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rider Profile | ACeRS</title>
-  <link rel="stylesheet" href="../css/site.css?v=20260811">
+  <link rel="stylesheet" href="../css/site.css?v=20260811-acers2">
 </head>
 <body>
   <nav class="top-nav">
     <div class="top-nav-inner">
       <a href="../index.html" class="nav-logo"><div class="nav-title"><div class="nav-main">Army Cycling eRacing</div><div class="nav-sub">Army Cycling eRace Series</div></div></a>
-      <div class="nav-links"><a href="./index.html">ACeRS Home</a><a href="./riders.html" class="active">Riders</a><a href="./results.html">Race Results</a><a href="./standings.html">2025/26 Standings</a></div>
+      <div class="nav-links"><a href="./index.html">ACeRS Home</a><a href="./riders.html" class="active">Riders</a><a href="./results.html">Race Results</a><a href="./standings.html">Series Standings</a><a href="./schedule.html">Schedule</a><a href="./rules.html">Rules</a><a href="./archive.html">Archive</a></div>
     </div>
   </nav>
 
@@ -22,7 +22,7 @@
     const root = document.getElementById('profileRoot');
 
     function metric(label, entry, type='points') {
-      if (!entry) return `<div class="profile-metric"><span>${label}</span><strong>—</strong><small>No championship entry</small></div>`;
+      if (!entry) return `<div class="profile-metric"><span>${label}</span><strong>—</strong><small>No series entry</small></div>`;
       const value = type === 'gc' ? formatExcelDuration(entry.time) : (entry.total ?? '—');
       return `<div class="profile-metric"><span>${label}</span><strong>${esc(value)}</strong><small>${entry.position ? `Position ${esc(entry.position)}` : 'No position'}</small></div>`;
     }
@@ -38,9 +38,9 @@
           <div><div class="eyebrow">ACeRS RIDER PROFILE • 2025/26</div><h1>${esc(rider.name)}</h1><div class="profile-meta"><span>${esc(rider.corps)}</span><span>${esc(rider.competition)} Competition</span><span>Category ${esc(rider.cat)}</span><span>Zwift ID ${esc(rider.zwiftId)}</span></div></div>
           <div>${verifiedBadge(rider.verified)}</div>
         </section>
-        ${rider.verified ? `<section class="verification-message ok"><strong>✓ Membership verified</strong><p>This rider is eligible to count in official ACeRS championship results.</p></section>` : `<section class="verification-message warning"><strong>Membership not verified</strong><p>This rider is registered, but their Army Cycling membership has not been verified. Their race participation may therefore not appear or count in the official ACeRS championship standings.</p></section>`}
-        <section class="profile-section"><div class="section-heading"><div><div class="eyebrow">AUTUMN 2025</div><h2>Championship record</h2></div><a href="./standings.html">View full standings →</a></div>
-          <div class="metric-grid">${metric('Championship points',s.points)}${metric('Sprint points',s.sprint)}${metric('KOM points',s.kom)}${metric('General classification',s.gc,'gc')}</div>
+        ${rider.verified ? `<section class="verification-message ok"><strong>✓ Membership verified</strong><p>This rider is eligible to count in official ACeRS series results.</p></section>` : `<section class="verification-message warning"><strong>Membership not verified</strong><p>This rider is registered, but their Army Cycling membership has not been verified. Their race participation may therefore not appear or count in the official ACeRS series standings.</p></section>`}
+        <section class="profile-section"><div class="section-heading"><div><div class="eyebrow">AUTUMN 2025</div><h2>Series record</h2></div><a href="./standings.html">View full standings →</a></div>
+          <div class="metric-grid">${metric('Series points',s.points)}${metric('Sprint points',s.sprint)}${metric('KOM points',s.kom)}${metric('General classification',s.gc,'gc')}</div>
         </section>
         <section class="profile-section"><div class="section-heading"><div><div class="eyebrow">RACE HISTORY</div><h2>Race-by-race points</h2></div></div>
           <div class="race-history">${racePoints.map((p,i)=>`<div class="race-tile"><a href="./results.html?race=${i+1}"><span>Race ${i+1}</span><strong>${p ?? '—'}</strong><small>${p === null || p === undefined ? 'No score' : 'points'}</small><span class="race-link">View result →</span></a></div>`).join('')}</div>
