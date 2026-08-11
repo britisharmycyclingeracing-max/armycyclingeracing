@@ -10,7 +10,7 @@
   <nav class="top-nav">
     <div class="top-nav-inner">
       <a href="../index.html" class="nav-logo"><div class="nav-title"><div class="nav-main">Army Cycling eRacing</div><div class="nav-sub">Army Cycling eRace Series</div></div></a>
-      <div class="nav-links"><a href="./index.html">ACeRS Home</a><a href="./riders.html" class="active">Riders</a><a href="./standings.html">2025/26 Standings</a></div>
+      <div class="nav-links"><a href="./index.html">ACeRS Home</a><a href="./riders.html" class="active">Riders</a><a href="./results.html">Race Results</a><a href="./standings.html">2025/26 Standings</a></div>
     </div>
   </nav>
 
@@ -43,7 +43,7 @@
           <div class="metric-grid">${metric('Championship points',s.points)}${metric('Sprint points',s.sprint)}${metric('KOM points',s.kom)}${metric('General classification',s.gc,'gc')}</div>
         </section>
         <section class="profile-section"><div class="section-heading"><div><div class="eyebrow">RACE HISTORY</div><h2>Race-by-race points</h2></div></div>
-          <div class="race-history">${racePoints.map((p,i)=>`<div class="race-tile"><span>Race ${i+1}</span><strong>${p ?? '—'}</strong><small>${p === null || p === undefined ? 'No score' : 'points'}</small></div>`).join('')}</div>
+          <div class="race-history">${racePoints.map((p,i)=>`<div class="race-tile"><a href="./results.html?race=${i+1}"><span>Race ${i+1}</span><strong>${p ?? '—'}</strong><small>${p === null || p === undefined ? 'No score' : 'points'}</small><span class="race-link">View result →</span></a></div>`).join('')}</div>
         </section>
         <div class="profile-actions"><a class="back-link" href="./riders.html">← Back to Riders</a><a class="btn secondary" href="https://zwiftpower.com/profile.php?z=${encodeURIComponent(rider.zwiftId)}" target="_blank" rel="noopener">ZwiftPower profile ↗</a></div>`;
     }).catch(err => root.innerHTML = `<div class="profile-loading">${esc(err.message)}</div>`);
