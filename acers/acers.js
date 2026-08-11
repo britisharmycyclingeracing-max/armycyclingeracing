@@ -74,3 +74,42 @@ function updateSeriesNav(seriesId=getSeriesId()) {
     a.href=`./${page}.html?series=${encodeURIComponent(seriesId)}`;
   });
 }
+
+
+/* Corps jersey display */
+const CORPS_JERSEY_MAP = {
+  'AAC': 'AAC.png',
+  'AGC': 'AGC.png',
+  'AMS': 'AMS.png',
+  'RAMS': 'AMS.png',
+  'RAMS- DENTAL': 'AMS.png',
+  'RAMS - DENTAL': 'AMS.png',
+  'INF': 'INFANTRY.png',
+  'INFANTRY': 'INFANTRY.png',
+  'INT CORPS': 'INT CORPS.png',
+  'RA': 'RA.png',
+  'RAC': 'RAC.png',
+  'RAPTC': 'RAPTC.png',
+  'RCAM': 'RCAM.png',
+  'RE': 'RE.png',
+  'REME': 'REME.png',
+  'RLC': 'RLC.png',
+  'R SIGNALS': 'R SIGNALS.png',
+  'ROYAL SIGNALS': 'R SIGNALS.png',
+  'RAF': 'RoyalAirForce2024_thumb.png',
+  'ROYAL AIR FORCE': 'RoyalAirForce2024_thumb.png',
+  'ROYAL NAVY': 'RoyalNavy2024_thumb.png'
+};
+function corpsJerseyFile(corps) {
+  const key = String(corps || '').trim().toUpperCase().replace(/\s+/g, ' ');
+  return CORPS_JERSEY_MAP[key] || '';
+}
+function corpsJerseyPath(corps) {
+  const file = corpsJerseyFile(corps);
+  return file ? `../jersey/${encodeURIComponent(file)}` : '';
+}
+function jerseyImg(corps, className='jersey-thumb') {
+  const src = corpsJerseyPath(corps);
+  if (!src) return '';
+  return `<img class="${esc(className)}" src="${src}" alt="${esc(corps)} cycling jersey" loading="lazy" onerror="this.style.display='none'">`;
+}
