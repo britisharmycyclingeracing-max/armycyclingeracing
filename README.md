@@ -1,26 +1,19 @@
-# mmm-racing
-
-# Monday Military Madness Racing Site
+# Army Cycling eRacing
 
 Frontend: GitHub Pages  
-Backend: Google Apps Script API  
-Database: Google Sheets  
+Existing MMM backend: Google Apps Script API / Google Sheets
 
-## Pages
+## Site structure
 
-index.html — Home dashboard  
-results-index.html — Campaign overview  
-results.html — Individual race results  
-standings.html — Overall standings  
-riders.html — Rider directory  
-profile.html — Rider profile  
-rules.html — Series rules
+- `index.html` — Army Cycling eRacing hub
+- `acers/index.html` — ACeRS starter landing page
+- `mmm.html` — preserved Monday Military Madness dashboard
+- `community/index.html` — community rides landing page
+- `results-index.html` — MMM campaign overview
+- `results.html` — MMM individual race results
+- `standings.html` — MMM overall standings
+- `riders.html` — MMM rider directory
+- `profile.html` — MMM rider profile
+- `rules.html` — MMM series rules
 
-## API Endpoints
-
-api=home  
-api=race-cards  
-api=race-results  
-api=standings  
-api=riders  
-api=profile
+The first-pass restructure deliberately leaves the existing MMM results/API files in their original locations to avoid breaking working links and relative paths.
