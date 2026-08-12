@@ -557,3 +557,9 @@ table {
 .profile-side{display:flex;align-items:center;gap:18px;flex:0 0 auto}
 .jersey-profile{width:132px;height:132px;object-fit:contain;object-position:center;display:block;filter:drop-shadow(0 10px 18px rgba(0,0,0,.35))}
 @media(max-width:650px){.profile-side{width:100%;justify-content:space-between;align-items:flex-end}.jersey-profile{width:100px;height:100px}.jersey-thumb{width:34px;height:34px;flex-basis:34px}}
+
+/* ACeRS filtered exports */
+.export-btn{border:1px solid #3a3a3a;cursor:pointer;font-family:inherit;white-space:nowrap}
+.export-btn:hover{background:#444}
+.data-toolbar .export-btn{min-height:42px}
+@media(max-width:650px){.data-toolbar .export-btn{flex:1 1 auto}}
