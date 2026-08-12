@@ -113,3 +113,30 @@ function jerseyImg(corps, className='jersey-thumb') {
   if (!src) return '';
   return `<img class="${esc(className)}" src="${src}" alt="${esc(corps)} cycling jersey" loading="lazy" onerror="this.style.display='none'">`;
 }
+
+
+/* Filtered export helpers */
+function downloadCsv(filename, headers, rows) {
+  const quote = value => `"${String(value ?? '').replaceAll('"','""')}"`;
+  const csv = [headers, ...rows].map(row => row.map(quote).join(',')).join('\r\n');
+  const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+function safeFilePart(value) {
+  return String(value || '').trim().replace(/[^a-z0-9]+/gi,'_').replace(/^_+|_+$/g,'') || 'All';
+}
+function printFilteredReport({ title, subtitle='', filters=[], headers=[], rows=[], jerseyCorps='' }) {
+  const jersey = jerseyCorps ? corpsJerseyPath(jerseyCorps) : '';
+  const jerseyAbs = jersey ? new URL(jersey, location.href).href : '';
+  const filterText = filters.filter(Boolean).join(' • ') || 'No additional filters';
+  const generated = new Date().toLocaleString('en-GB', { dateStyle:'medium', timeStyle:'short' });
+  const w = window.open('', '_blank');
+  if (!w) { alert('Please allow pop-ups to export the PDF/print report.'); return; }
+  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(title)}</title><style>
+    @page{size:A4 landscape;margin:12mm}body{font-family:Arial,sans-serif;color:#111;margin:0}header{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;border-bottom:3px solid #111;padding-bottom:12px;margin-bottom:16px}h1{font-size:24px;margin:0 0 5px}.sub{font-size:13px;color:#555}.meta{font-size:11px;color:#666;margin-top:6px}.jersey{height:72px;width:auto}table{width:100%;border-collapse:collapse;font-size:10.5px}th{background:#111;color:#fff;text-align:left;padding:7px 6px}td{padding:6px;border-bottom:1px solid #ddd;vertical-align:top}tbody tr:nth-child(even){background:#f6f6f6}.foot{font-size:9px;color:#777;margin-top:12px}@media print{button{display:none}}
+  </style></head><body><header><div><div style="font-size:10px;font-weight:700;letter-spacing:.12em">ARMY CYCLING eRACING</div><h1>${esc(title)}</h1><div class="sub">${esc(subtitle)}</div><div class="meta">${esc(filterText)}<br>Generated ${esc(generated)}</div></div>${jerseyAbs ? `<img class="jersey" src="${jerseyAbs}" alt="${esc(jerseyCorps)} jersey">` : ''}</header><table><thead><tr>${headers.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${row.map(v=>`<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table><div class="foot">Exported from Army Cycling eRacing. The report reflects the filters applied at the time of export.</div><script>window.onload=()=>setTimeout(()=>window.print(),250)<\/script></body></html>`);
+  w.document.close();
+}
