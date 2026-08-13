@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Schedule | ACeRS</title>
-  <link rel="stylesheet" href="../css/site.css?v=20260813-aut26">
+  <link rel="stylesheet" href="../css/site.css?v=20260813-powerups">
 </head>
 <body>
 <nav class="top-nav">
@@ -76,9 +76,30 @@ function catLine(cats){
     return `<div><b>${cat}</b>${bits.join(' • ')}</div>`;
   }).join('')}</div>`;
 }
+function powerUpNames(value){
+  if(!value)return[];
+  return String(value)
+    .split(/\s*(?:\n|\/|,|\+|\band\b|&)\s*/i)
+    .map(v=>v.trim())
+    .filter(Boolean);
+}
+function powerUpIcon(name){
+  const safeName=esc(name);
+  const src=`../assets/powerup/${encodeURIComponent(name)}.png`;
+  return `<span class="powerup-item">
+    <img src="${src}" alt="${safeName} power-up" loading="lazy"
+         onerror="this.style.display='none';this.closest('.powerup-item').classList.add('image-missing')">
+    <span>${safeName}</span>
+  </span>`;
+}
+function powerUpDisplay(value){
+  const names=powerUpNames(value);
+  if(!names.length)return'';
+  return `<div class="powerup-row">${names.map(powerUpIcon).join('')}</div>`;
+}
 function detailList(r){
   const rows=[];
-  if(r.powerUp) rows.push(`<div><b>Power-ups</b><span>${esc(r.powerUp).replace(/\n/g,' • ')}</span></div>`);
+  if(r.powerUp) rows.push(`<div class="powerup-detail"><b>Power-ups</b>${powerUpDisplay(r.powerUp)}</div>`);
   if(r.sprint) rows.push(`<div><b>Sprint</b><span>${esc(r.sprint).replace(/\n/g,'<br>')}</span></div>`);
   if(r.kqom) rows.push(`<div><b>KQOM</b><span>${esc(r.kqom).replace(/\n/g,'<br>')}</span></div>`);
   return rows.length?`<div class="schedule-detail-list">${rows.join('')}</div>`:'';
