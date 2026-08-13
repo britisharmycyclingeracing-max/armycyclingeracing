@@ -1,7 +1,123 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Schedule | ACeRS</title><link rel="stylesheet" href="../css/site.css?v=20260811-acers3"></head><body>
-<nav class="top-nav"><div class="top-nav-inner"><a href="../index.html" class="nav-logo"><div class="nav-title"><div class="nav-main">Army Cycling eRacing</div><div class="nav-sub">Army Cycling eRace Series</div></div></a><div class="nav-links"><a href="./index.html">ACeRS Home</a><a data-series-link="riders" href="./riders.html">Riders</a><a data-series-link="results" href="./results.html">Results</a><a data-series-link="standings" href="./standings.html">Standings</a><a class="active" data-series-link="schedule" href="./schedule.html">Schedule</a><a href="./rules.html">Rules</a><a href="./archive.html">Archive</a></div></div></nav>
-<main class="section-shell acers-data-page"><section class="data-page-hero"><div class="eyebrow" id="scheduleEyebrow">2025/26 ARCHIVE</div><h1 id="scheduleTitle">Race <span>Schedule</span></h1><p id="scheduleIntro">Historical ACeRS race programme.</p></section><div class="series-switcher" id="seriesSwitcher"></div><section class="schedule-season"><div class="race-schedule-grid" id="scheduleGrid"><div class="loading-cell">Loading schedule…</div></div></section><a class="back-link" href="./index.html">← Back to ACeRS</a></main>
-<script src="./config.js"></script><script src="./acers.js"></script><script>
-const sid=getSeriesId();renderSeriesSelector('seriesSwitcher',sid);updateSeriesNav(sid);function displayDate(v){if(!v)return'';const d=new Date(v);if(Number.isNaN(d.getTime()))return v;return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}function catLine(cats){if(!cats)return'';const rows=Object.entries(cats).filter(([k,v])=>v&&(v.distance!==null||v.laps));if(!rows.length)return'';return`<div class="schedule-category-lines">${rows.map(([cat,v])=>`<div><b>${cat}</b>${v.laps?`${esc(v.laps)} lap${String(v.laps)==='1'?'':'s'} • `:''}${v.distance!==null?`${esc(v.distance)} km`:''}${v.elevation!==null?` • ${esc(v.elevation)} m`:''}</div>`).join('')}</div>`;}
-loadAcersData(sid).then(d=>{document.title=`Schedule | ${d.meta.label} | ACeRS`;document.getElementById('scheduleEyebrow').textContent=`${d.meta.season} ARCHIVE • ${d.meta.type==='championship'?'CHAMPIONSHIP':'SERIES'}`;document.getElementById('scheduleTitle').innerHTML=`${esc(d.meta.label)} <span${d.meta.type==='championship'?' class="championship-accent"':''}>Schedule</span>`;document.getElementById('scheduleIntro').textContent=`Historical race programme for the ${d.meta.label} ${d.meta.type==='championship'?'Championship':'series'}.`;document.getElementById('scheduleGrid').innerHTML=(d.races||[]).length?(d.races||[]).map(r=>`<article class="schedule-race-card"><span>Race ${r.number}${r.date?` • ${esc(displayDate(r.date))}`:''}</span><h3>${esc(r.course||`Race ${r.number}`)}</h3>${r.type?`<p>${esc(r.type)}</p>`:''}${catLine(r.categories)}<div class="schedule-race-links"><a href="${resultsUrl(sid,r.number)}">Results →</a>${r.racePass?`<a href="${esc(r.racePass)}" target="_blank" rel="noopener">Zwift event ↗</a>`:''}</div></article>`).join(''):'<div class="series-empty-note">No schedule information is available for this competition.</div>';}).catch(err=>document.getElementById('scheduleGrid').innerHTML=`<div class="series-empty-note">${esc(err.message)}</div>`);
-</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Schedule | ACeRS</title>
+  <link rel="stylesheet" href="../css/site.css?v=20260813-aut26">
+</head>
+<body>
+<nav class="top-nav">
+  <div class="top-nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-title">
+        <div class="nav-main">Army Cycling eRacing</div>
+        <div class="nav-sub">Army Cycling eRace Series</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="./index.html">ACeRS Home</a>
+      <a data-series-link="riders" href="./riders.html">Riders</a>
+      <a data-series-link="results" href="./results.html">Results</a>
+      <a data-series-link="standings" href="./standings.html">Standings</a>
+      <a class="active" data-series-link="schedule" href="./schedule.html">Schedule</a>
+      <a href="./rules.html">Rules</a>
+      <a href="./archive.html">Archive</a>
+    </div>
+  </div>
+</nav>
+
+<main class="section-shell acers-data-page">
+  <section class="data-page-hero">
+    <div class="eyebrow" id="scheduleEyebrow">CURRENT SERIES</div>
+    <h1 id="scheduleTitle">Race <span>Schedule</span></h1>
+    <p id="scheduleIntro">Loading ACeRS race programme…</p>
+  </section>
+
+  <div class="series-switcher" id="seriesSwitcher"></div>
+
+  <section class="schedule-season">
+    <div class="race-schedule-grid live-schedule-grid" id="scheduleGrid">
+      <div class="loading-cell">Loading schedule…</div>
+    </div>
+  </section>
+
+  <a class="back-link" href="./index.html">← Back to ACeRS</a>
+</main>
+
+<script src="./config.js"></script>
+<script src="./acers.js?v=20260813-aut26"></script>
+<script>
+const sid=getSeriesId();
+renderSeriesSelector('seriesSwitcher',sid);
+updateSeriesNav(sid);
+
+function displayDate(v){
+  if(!v)return'';
+  const d=new Date(v);
+  if(Number.isNaN(d.getTime()))return v;
+  return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+}
+function unitText(value, unit){
+  if(value===null||value===undefined||value==='')return'';
+  const s=String(value).trim();
+  if(/[a-zA-Z]/.test(s)) return s;
+  return `${s} ${unit}`;
+}
+function catLine(cats){
+  if(!cats)return'';
+  const rows=Object.entries(cats).filter(([k,v])=>v&&(v.distance||v.laps||v.elevation));
+  if(!rows.length)return'';
+  return `<div class="schedule-category-lines">${rows.map(([cat,v])=>{
+    const bits=[];
+    if(v.laps) bits.push(`${esc(v.laps)} lap${String(v.laps)==='1'?'':'s'}`);
+    if(v.distance) bits.push(esc(unitText(v.distance,'km')));
+    if(v.elevation) bits.push(esc(unitText(v.elevation,'m')));
+    return `<div><b>${cat}</b>${bits.join(' • ')}</div>`;
+  }).join('')}</div>`;
+}
+function detailList(r){
+  const rows=[];
+  if(r.powerUp) rows.push(`<div><b>Power-ups</b><span>${esc(r.powerUp).replace(/\n/g,' • ')}</span></div>`);
+  if(r.sprint) rows.push(`<div><b>Sprint</b><span>${esc(r.sprint).replace(/\n/g,'<br>')}</span></div>`);
+  if(r.kqom) rows.push(`<div><b>KQOM</b><span>${esc(r.kqom).replace(/\n/g,'<br>')}</span></div>`);
+  return rows.length?`<div class="schedule-detail-list">${rows.join('')}</div>`:'';
+}
+function raceLinks(r){
+  const links=[];
+  if((r.results||[]).length) links.push(`<a href="${resultsUrl(sid,r.number)}">Results →</a>`);
+  if(r.racePass) links.push(`<a href="${esc(r.racePass)}" target="_blank" rel="noopener">RacePass ↗</a>`);
+  if(r.zwiftPower) links.push(`<a href="${esc(r.zwiftPower)}" target="_blank" rel="noopener">ZwiftPower ↗</a>`);
+  if(r.youtube) links.push(`<a href="${esc(r.youtube)}" target="_blank" rel="noopener">YouTube ↗</a>`);
+  if(r.map) links.push(`<a href="${esc(r.map)}" target="_blank" rel="noopener">Map ↗</a>`);
+  return links.length?`<div class="schedule-race-links">${links.join('')}</div>`:'';
+}
+
+loadAcersData(sid).then(d=>{
+  document.title=`Schedule | ${d.meta.label} | ACeRS`;
+  const current=!!d.meta.current;
+  document.getElementById('scheduleEyebrow').textContent=current?`${d.meta.season} • CURRENT SERIES`:`${d.meta.season} ARCHIVE • ${d.meta.type==='championship'?'CHAMPIONSHIP':'SERIES'}`;
+  document.getElementById('scheduleTitle').innerHTML=`${esc(d.meta.label)} <span${d.meta.type==='championship'?' class="championship-accent"':''}>Schedule</span>`;
+  document.getElementById('scheduleIntro').textContent=current
+    ? `Live race programme for the ${d.meta.label} series. RacePass, ZwiftPower and stream links will appear here as they are added to the ACeRS Admin sheet.`
+    : `Historical race programme for the ${d.meta.label} ${d.meta.type==='championship'?'Championship':'series'}.`;
+
+  const races=d.races||[];
+  document.getElementById('scheduleGrid').innerHTML=races.length?races.map(r=>`
+    <article class="schedule-race-card live-schedule-card" id="race-${r.number}">
+      <div class="schedule-card-top">
+        <span>Race ${r.number}${r.date?` • ${esc(displayDate(r.date))}`:''}</span>
+        ${r.type?`<span class="schedule-type-chip">${esc(r.type)}</span>`:''}
+      </div>
+      <h3>${esc(r.course||`Race ${r.number}`)}</h3>
+      ${catLine(r.categories)}
+      ${detailList(r)}
+      ${raceLinks(r)}
+    </article>`).join('')
+    : '<div class="series-empty-note">No schedule information is available for this competition.</div>';
+}).catch(err=>{
+  document.getElementById('scheduleGrid').innerHTML=`<div class="series-empty-note">${esc(err.message)}</div>`;
+});
+</script>
+</body>
+</html>

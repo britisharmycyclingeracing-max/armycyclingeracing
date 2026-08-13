@@ -1,15 +1,16 @@
 const ACERS_SERIES = [
+  { id: 'aut26', label: 'Autumn 2026', type: 'series', season: '2026/27', current: true },
   { id: 'aut25', label: 'Autumn 2025', type: 'series', season: '2025/26' },
   { id: 'wint26', label: 'Winter 2026', type: 'series', season: '2025/26' },
   { id: 'champ2526', label: 'Championship 2025/26', type: 'championship', season: '2025/26' }
 ];
 
 function getSeriesId() {
-  const raw = new URLSearchParams(location.search).get('series') || 'aut25';
+  const raw = new URLSearchParams(location.search).get('series') || 'aut26';
   const normalized = String(raw).toLowerCase().replace(/[^a-z0-9]/g, '');
-  const aliases = { autumn2025:'aut25', autumn25:'aut25', aut25:'aut25', winter2026:'wint26', winter26:'wint26', wint26:'wint26', championship2526:'champ2526', championship202526:'champ2526', champ2526:'champ2526', champ25:'champ2526' };
+  const aliases = { autumn2026:'aut26', autumn26:'aut26', aut26:'aut26', autumn2025:'aut25', autumn25:'aut25', aut25:'aut25', winter2026:'wint26', winter26:'wint26', wint26:'wint26', championship2526:'champ2526', championship202526:'champ2526', champ2526:'champ2526', champ25:'champ2526' };
   const id = aliases[normalized] || normalized;
-  return ACERS_SERIES.some(s => s.id === id) ? id : 'aut25';
+  return ACERS_SERIES.some(s => s.id === id) ? id : 'aut26';
 }
 
 function currentSeriesConfig() { return ACERS_SERIES.find(s => s.id === getSeriesId()) || ACERS_SERIES[0]; }
@@ -66,7 +67,7 @@ function standingsLabel(meta) { return meta.standingsLabel || (meta.type === 'ch
 
 function renderSeriesSelector(containerId, activeId = getSeriesId()) {
   const el=document.getElementById(containerId); if(!el)return;
-  el.innerHTML=ACERS_SERIES.map(s=>`<a class="series-switch${s.id===activeId?' active':''}${s.type==='championship'?' championship':''}" href="?series=${encodeURIComponent(s.id)}"><small>${s.type==='championship'?'CHAMPIONSHIP':'SERIES'}</small><strong>${esc(s.label)}</strong></a>`).join('');
+  el.innerHTML=ACERS_SERIES.map(s=>`<a class="series-switch${s.id===activeId?' active':''}${s.type==='championship'?' championship':''}${s.current?' current':''}" href="?series=${encodeURIComponent(s.id)}"><small>${s.current?'CURRENT SERIES':(s.type==='championship'?'CHAMPIONSHIP':'SERIES')}</small><strong>${esc(s.label)}</strong></a>`).join('');
 }
 function updateSeriesNav(seriesId=getSeriesId()) {
   document.querySelectorAll('[data-series-link]').forEach(a=>{
