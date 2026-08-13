@@ -563,3 +563,31 @@ table {
 .export-btn:hover{background:#444}
 .data-toolbar .export-btn{min-height:42px}
 @media(max-width:650px){.data-toolbar .export-btn{flex:1 1 auto}}
+
+
+/* Autumn 2026 current-series schedule */
+.series-switch.current{border-color:#5b3922}
+.series-switch.current small{color:#ffb37d}
+.current-season-banner{border-left-color:#e10600}
+.current-schedule-preview{margin:30px 0 44px}
+.current-schedule-preview .section-heading>a{color:#aaa;text-decoration:none;font-size:12px;font-weight:800}
+.homepage-schedule-grid{grid-template-columns:repeat(3,1fr)}
+.homepage-race-card{text-decoration:none;color:white;min-height:120px}
+.homepage-race-card:hover{border-color:#4a4a4a;transform:translateY(-2px)}
+.schedule-card-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.schedule-card-top>span:first-child{color:#888;font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.schedule-type-chip{border:1px solid #3c3c3c;border-radius:999px;padding:5px 8px;color:#ccc;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.live-schedule-card{scroll-margin-top:100px}
+.live-schedule-card h3{font-size:22px;margin:12px 0 14px}
+.schedule-category-lines{display:grid;gap:7px;padding:13px 0;border-top:1px solid #252525;border-bottom:1px solid #252525;color:#aaa;font-size:12px}
+.schedule-category-lines div{display:grid;grid-template-columns:28px 1fr;gap:7px}
+.schedule-category-lines b{color:#fff}
+.schedule-detail-list{display:grid;gap:11px;padding:14px 0}
+.schedule-detail-list>div{display:grid;grid-template-columns:82px 1fr;gap:10px;color:#999;font-size:12px;line-height:1.45}
+.schedule-detail-list b{color:#ddd}
+.schedule-race-links{display:flex;gap:12px;flex-wrap:wrap;border-top:1px solid #252525;padding-top:14px;margin-top:auto}
+.schedule-race-links a{color:#ddd;text-decoration:none;font-size:11px;font-weight:800}
+.schedule-race-links a:hover{text-decoration:underline}
+.live-schedule-card{display:flex;flex-direction:column}
+@media(max-width:900px){.homepage-schedule-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.homepage-schedule-grid{grid-template-columns:1fr}.schedule-detail-list>div{grid-template-columns:1fr;gap:4px}}
