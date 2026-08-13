@@ -1,7 +1,7 @@
 // Army Cycling eRacing - shared sponsors/supporters footer
 (() => {
   const SPONSORS = ['ABUS.png', 'EVERYWHEN.jpg', 'FENWICKS.png', 'REED_IN_PARTNERSHIP.png'];
-  const SUPPORTERS = [];
+  const SUPPORTERS = ['KALAS.png'];
 
   function rootUrl() {
     const src = document.currentScript?.src || '';
