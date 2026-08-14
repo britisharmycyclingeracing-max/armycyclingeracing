@@ -60,6 +60,16 @@ function formatExcelDuration(value) {
   return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 function verifiedBadge(verified) { return verified ? '<span class="verify-badge verified">✓ Verified</span>' : '<span class="verify-badge unverified">Not verified</span>'; }
+function registrationStatusBadge(rider, season='') {
+  if (rider && rider.registeredForSeason && rider.verified) return '<span class="verify-badge verified">✓ Registered &amp; Verified</span>';
+  if (rider && rider.registeredForSeason) return '<span class="verify-badge pending">Registered – Not Verified</span>';
+  return `<span class="verify-badge unregistered">Not Registered${season ? ` for ${esc(season)}` : ''}</span>`;
+}
+function registrationStatusKey(rider) {
+  if (rider && rider.registeredForSeason && rider.verified) return 'verified';
+  if (rider && rider.registeredForSeason) return 'unverified';
+  return 'unregistered';
+}
 function findRider(data, zwiftId) { return (data.riders || []).find(r => String(r.zwiftId) === String(zwiftId)); }
 function standingsForRider(data, zwiftId) { const result={}; ['points','sprint','kom','gc'].forEach(k => result[k]=(data.standings[k]||[]).find(r=>String(r.zwiftId)===String(zwiftId))||null); return result; }
 function competitionLabel(meta) { return meta.type === 'championship' ? 'Championship' : 'Series'; }
