@@ -703,3 +703,10 @@ table {
   .partner-logo-wrap { min-width: 100px; height: 56px; padding: 8px 10px; }
   .partner-logo-wrap img { max-width: 125px; max-height: 40px; }
 }
+
+
+/* Rider History annual registration statuses */
+.verify-badge.pending { background:#3a3114; color:#f1d77c; border:1px solid #6b5a24; }
+.verify-badge.unregistered { background:#252525; color:#b8b8b8; border:1px solid #444; }
+.verification-message.neutral { background:#171717; border-color:#3b3b3b; }
+.verification-message.neutral strong { color:#ddd; }
