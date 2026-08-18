@@ -1,11 +1,17 @@
 // Army Cycling eRacing - shared sponsors/supporters footer
 (() => {
+  // Capture the script URL while document.currentScript is still available.
+  // If we wait until DOMContentLoaded, document.currentScript is null and
+  // nested pages (e.g. /acers/) resolve assets relative to the page instead.
+  const PARTNERS_SCRIPT_SRC = document.currentScript?.src || '';
+
   const SPONSORS = ['ABUS.png', 'EVERYWHEN.png', 'FENWICKS.png', 'REED_IN_PARTNERSHIP.png'];
   const SUPPORTERS = ['KALAS.png'];
 
   function rootUrl() {
-    const src = document.currentScript?.src || '';
-    return src ? new URL('../', src) : new URL('./', location.href);
+    return PARTNERS_SCRIPT_SRC
+      ? new URL('../', PARTNERS_SCRIPT_SRC)
+      : new URL('/', location.origin);
   }
 
   function logoUrl(folder, file) {
