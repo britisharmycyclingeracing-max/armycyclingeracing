@@ -710,3 +710,11 @@ table {
 .verify-badge.unregistered { background:#252525; color:#b8b8b8; border:1px solid #444; }
 .verification-message.neutral { background:#171717; border-color:#3b3b3b; }
 .verification-message.neutral strong { color:#ddd; }
+
+/* ACeRS schedule animated route maps (ZwiftHacks) */
+.schedule-route-map{margin:14px 0 0;background:#181818;border:1px solid #292929;border-radius:12px;padding:10px 10px 24px;position:relative;overflow:hidden;text-align:center}
+.schedule-route-map>a{display:block;border-radius:8px;overflow:hidden;background:#111}
+.schedule-route-map img{display:block;width:100%;max-width:360px;height:auto;margin:0 auto;object-fit:contain}
+.schedule-route-map figcaption{position:absolute;left:8px;right:8px;bottom:5px;margin:0;color:#777;font-size:9px;line-height:1.2}
+.schedule-route-map figcaption a{color:#aaa;text-decoration:none;font-weight:800}
+.schedule-route-map figcaption a:hover{color:#fff;text-decoration:underline}

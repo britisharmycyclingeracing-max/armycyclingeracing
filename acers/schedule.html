@@ -104,13 +104,24 @@ function detailList(r){
   if(r.kqom) rows.push(`<div><b>KQOM</b><span>${esc(r.kqom).replace(/\n/g,'<br>')}</span></div>`);
   return rows.length?`<div class="schedule-detail-list">${rows.join('')}</div>`:'';
 }
+function routeMap(r){
+  if(!r.map)return'';
+  const url=esc(r.map);
+  const course=esc(r.course||`Race ${r.number}`);
+  return `
+    <figure class="schedule-route-map">
+      <a href="${url}" target="_blank" rel="noopener noreferrer" aria-label="Open ${course} animated route map">
+        <img src="${url}" alt="Animated route map for ${course}" loading="lazy">
+      </a>
+      <figcaption>Animated map: <a href="https://zwifthacks.com" target="_blank" rel="noopener noreferrer">ZwiftHacks</a></figcaption>
+    </figure>`;
+}
 function raceLinks(r){
   const links=[];
   if((r.results||[]).length) links.push(`<a href="${resultsUrl(sid,r.number)}">Results →</a>`);
   if(r.racePass) links.push(`<a href="${esc(r.racePass)}" target="_blank" rel="noopener">RacePass ↗</a>`);
   if(r.zwiftPower) links.push(`<a href="${esc(r.zwiftPower)}" target="_blank" rel="noopener">ZwiftPower ↗</a>`);
   if(r.youtube) links.push(`<a href="${esc(r.youtube)}" target="_blank" rel="noopener">YouTube ↗</a>`);
-  if(r.map) links.push(`<a href="${esc(r.map)}" target="_blank" rel="noopener">Map ↗</a>`);
   return links.length?`<div class="schedule-race-links">${links.join('')}</div>`:'';
 }
 
@@ -133,6 +144,7 @@ loadAcersData(sid).then(d=>{
       <h3>${esc(r.course||`Race ${r.number}`)}</h3>
       ${catLine(r.categories)}
       ${detailList(r)}
+      ${routeMap(r)}
       ${raceLinks(r)}
     </article>`).join('')
     : '<div class="series-empty-note">No schedule information is available for this competition.</div>';
