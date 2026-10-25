@@ -2,13 +2,14 @@ const ACERS_SERIES = [
   { id: 'aut26', label: 'Autumn 2026', type: 'series', season: '2026/27', current: true },
   { id: 'aut25', label: 'Autumn 2025', type: 'series', season: '2025/26' },
   { id: 'wint26', label: 'Winter 2026', type: 'series', season: '2025/26' },
-  { id: 'champ2526', label: 'Championship 2025/26', type: 'championship', season: '2025/26' }
+  { id: 'champ2526', label: 'Championship 2025/26', type: 'championship', season: '2025/26' },
+  { id: 'champ26', label: 'Championships 2026', type: 'championship', season: '2026/27'},
 ];
 
 function getSeriesId() {
   const raw = new URLSearchParams(location.search).get('series') || 'aut26';
   const normalized = String(raw).toLowerCase().replace(/[^a-z0-9]/g, '');
-  const aliases = { autumn2026:'aut26', autumn26:'aut26', aut26:'aut26', autumn2025:'aut25', autumn25:'aut25', aut25:'aut25', winter2026:'wint26', winter26:'wint26', wint26:'wint26', championship2526:'champ2526', championship202526:'champ2526', champ2526:'champ2526', champ25:'champ2526' };
+  const aliases = { autumn2026:'aut26', autumn26:'aut26', aut26:'aut26', champ26: 'champ26', championship2026: 'champ26', autumn2025:'aut25', autumn25:'aut25', aut25:'aut25', winter2026:'wint26', winter26:'wint26', wint26:'wint26', championship2526:'champ2526', championship202526:'champ2526', champ2526:'champ2526', champ25:'champ2526' };
   const id = aliases[normalized] || normalized;
   return ACERS_SERIES.some(s => s.id === id) ? id : 'aut26';
 }
