@@ -3,8 +3,7 @@ const ACERS_SERIES = [
   { id: 'champ26', label: 'Championships 2026', type: 'championship', season: '2026/27'},
   { id: 'aut25', label: 'Autumn 2025', type: 'series', season: '2025/26' },
   { id: 'wint26', label: 'Winter 2026', type: 'series', season: '2025/26' },
-  { id: 'champ2526', label: 'Championship 2025/26', type: 'championship', season: '2025/26' },
-  { id: 'champ26', label: 'Championships 2026', type: 'championship', season: '2026/27'}
+  { id: 'champ2526', label: 'Championship 2025/26', type: 'championship', season: '2025/26' }
 ];
 
 function getSeriesId() {
