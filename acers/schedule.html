@@ -169,6 +169,10 @@ loadAcersData(sid).then(d=>{
         ${r.type?`<span class="schedule-type-chip">${esc(r.type)}</span>`:''}
       </div>
       <h3>${esc(r.course||`Race ${r.number}`)}</h3>
+      ${r.startTime
+        ? `<div class="schedule-start-time">🕒 ${esc(r.startTime)} UK</div>`
+        : ''}
+        
       ${catLine(r.categories)}
       ${detailList(r)}
       ${routeMap(r)}
